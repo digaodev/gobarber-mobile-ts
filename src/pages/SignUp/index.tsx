@@ -5,10 +5,16 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
+  TextInput,
+  Alert,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
+import { Form } from '@unform/mobile';
+import { FormHandles } from '@unform/core';
+import * as Yup from 'yup';
 
+import getValidationErrors from '../../utils/getValidationErrors';
 import logoImg from '../../assets/logo.png';
 import Input from '../../components/Input';
 
@@ -20,8 +26,59 @@ import {
   BackToSignInText,
 } from './styles';
 
+interface SignUpFormData {
+  email: string;
+  password: string;
+}
+
 const SignIn: React.FC = () => {
+  const formRef = React.useRef<FormHandles>(null);
+  const emailInputRef = React.useRef<TextInput>(null);
+  const passwordInputRef = React.useRef<TextInput>(null);
   const navigation = useNavigation();
+
+  const handleSignUp = React.useCallback(async (data: SignUpFormData): Promise<
+    void
+  > => {
+    try {
+      formRef.current?.setErrors({});
+
+      const schema = Yup.object().shape({
+        name: Yup.string().required('Nome é obrigatório'),
+        email: Yup.string()
+          .required('Email é obrigatório')
+          .email('Email inválido'),
+        password: Yup.string().min(6, 'Senha deve ter no mínimo 6 dígitos'),
+      });
+
+      await schema.validate(data, { abortEarly: false });
+
+      // await signUp({
+      //   name: data.name,
+      //   email: data.email,
+      //   password: data.password,
+      // });
+
+      Alert.alert('Sucesso', 'Você já pode fazer seu login na plataforma');
+
+      // history.push('/');
+    } catch (error) {
+      if (error instanceof Yup.ValidationError) {
+        const errors = getValidationErrors(error);
+        formRef.current?.setErrors(errors);
+      }
+
+      // addToast({
+      //   type: 'error',
+      //   title: 'Erro no cadastro',
+      //   description: 'Ocorreu um erro no cadastro. Verifique as credenciais',
+      // });
+      Alert.alert(
+        'Erro no cadastro',
+        'Ocorreu um erro no cadastro. Verifique as credenciais',
+      );
+    }
+  }, []);
 
   return (
     <>
@@ -41,17 +98,41 @@ const SignIn: React.FC = () => {
               <Title>Crie sua conta</Title>
             </View>
 
-            <Input name="name" icon="user" placeholder="Nome" />
-            <Input name="email" icon="mail" placeholder="E-mail" />
-            <Input name="password" icon="lock" placeholder="Senha" />
+            <Form ref={formRef} onSubmit={handleSignUp}>
+              <Input
+                name="name"
+                icon="user"
+                placeholder="Nome"
+                autoCapitalize="words"
+                returnKeyType="next"
+                onSubmitEditing={() => emailInputRef.current?.focus()}
+              />
+              <Input
+                ref={emailInputRef}
+                name="email"
+                icon="mail"
+                placeholder="E-mail"
+                keyboardType="email-address"
+                autoCorrect={false}
+                autoCapitalize="none"
+                returnKeyType="next"
+                onSubmitEditing={() => passwordInputRef.current?.focus()}
+              />
+              <Input
+                ref={passwordInputRef}
+                name="password"
+                icon="lock"
+                placeholder="Senha"
+                secureTextEntry
+                textContentType="newPassword"
+                returnKeyType="send"
+                onSubmitEditing={() => formRef.current?.submitForm()}
+              />
 
-            <SignUpButton
-              onPress={() => {
-                console.log('Criar conta');
-              }}
-            >
-              Criar conta
-            </SignUpButton>
+              <SignUpButton onPress={() => formRef.current?.submitForm()}>
+                Criar conta
+              </SignUpButton>
+            </Form>
           </Container>
         </ScrollView>
       </KeyboardAvoidingView>
