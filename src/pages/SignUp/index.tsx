@@ -14,6 +14,7 @@ import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
 import * as Yup from 'yup';
 
+import api from '../../services/api';
 import getValidationErrors from '../../utils/getValidationErrors';
 import logoImg from '../../assets/logo.png';
 import Input from '../../components/Input';
@@ -53,26 +54,17 @@ const SignIn: React.FC = () => {
 
       await schema.validate(data, { abortEarly: false });
 
-      // await signUp({
-      //   name: data.name,
-      //   email: data.email,
-      //   password: data.password,
-      // });
+      await api.post('/users', data);
 
       Alert.alert('Sucesso', 'Você já pode fazer seu login na plataforma');
 
-      // history.push('/');
+      navigation.goBack();
     } catch (error) {
       if (error instanceof Yup.ValidationError) {
         const errors = getValidationErrors(error);
         formRef.current?.setErrors(errors);
       }
 
-      // addToast({
-      //   type: 'error',
-      //   title: 'Erro no cadastro',
-      //   description: 'Ocorreu um erro no cadastro. Verifique as credenciais',
-      // });
       Alert.alert(
         'Erro no cadastro',
         'Ocorreu um erro no cadastro. Verifique as credenciais',
