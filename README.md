@@ -70,7 +70,7 @@ $ git clone https://github.com/digaodev/gobarber-mobile-ts.git && cd gobarber-mo
 $ yarn
 
 # Run the app in dev mode and start the IOS emulator (ios command is MacOS only)
-$ yarn run ios or
+$ yarn run ios
 
 # OR run the app in dev mode and start the Android emulator
 $ yarn run android
