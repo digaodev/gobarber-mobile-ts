@@ -3,11 +3,11 @@
 </h1>
 
 <h3 align="center">
-  React web application for the GoBarber project
+  React Native mobile app for the GoBarber project
 </h3>
 
 <h1 align="center">
-  <img alt="Login page" src="https://github.com/digaodev/gobarber-mobile-ts/blob/master/docs/login.png?raw=true" width="600px">
+  <img alt="Login page" src="https://github.com/digaodev/gobarber-mobile-ts/blob/master/docs/login.png?raw=true" width="250px">
 </h1>
 
 <p align="center">A useful and intuitive way to manage your appointments</p>
@@ -55,6 +55,7 @@ These are the main techs used in this project:
 
 - Have the backend API running in order for this app to consume its data
 - If you haven't yet, go to [GoBarber API](https://github.com/digaodev/gobarber-backend-ts) and follow the instructions
+- There is a lot to setup in React Native, so follow the [official instructions](https://reactnative.dev/docs/environment-setup) carefully for your operating system before moving on
 
 **Clone the project and access the project folder**
 
@@ -65,10 +66,6 @@ $ git clone https://github.com/digaodev/gobarber-mobile-ts.git && cd gobarber-mo
 **Go through the following steps**
 
 ```bash
-
-#
-There is a lot to setup in React Native, so follow the [official instructions](https://reactnative.dev/docs/environment-setup)  carefully for your operating system before moving on
-
 # Install the dependencies
 $ yarn
 
