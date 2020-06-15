@@ -69,6 +69,9 @@ $ git clone https://github.com/digaodev/gobarber-mobile-ts.git && cd gobarber-mo
 # Install the dependencies
 $ yarn
 
+# Install the pods for ios
+$ cd ios && pod install
+
 # Run the app in dev mode and start the IOS emulator (ios command is MacOS only)
 $ yarn run ios
 
